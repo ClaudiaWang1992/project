@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="任务20">
+  <meta name="Description" content="">
+  <title>任务19</title>
+ <style type="text/css">
+	*{
+	   padding:0px;
+	   margin:0px;
+	 }
+	 input,button,select,textarea{outline:none}
+	 #box{
+		position:relative;
+		margin:20px auto;
+		width:1200px;
+	 }
+	 #input{
+		position:relative;
+		margin:50px auto;
+		text-align:center;
+		height:38px;
+		line-height:38px;
+	}
+	#txt,#key{
+	    width:200px;
+		height:36px;
+		border:1px solid #33ccff;
+		border-radius:4px;
+		box-shadow:0px 0px 15px #33ccff;
+        display:inline-block;
+		vertical-align:middle;/*这里能够通过在行内元素中加入vertical-align使得元素相对于父元素垂直居中*/
+	}
+	#txt{
+		resize:none;
+	}
+	#input button{
+		width:50px;
+		height:24px;
+        border:1px solid #33ccff;
+		border-radius:2px;
+		margin:2px;/*button元素的margin以及padding会影响button的内容宽度*/
+		vertical-align:middle;
+	}
+	#show{
+	    position:relative;
+		margin:50px auto;
+		vertical-align:center;
+		text-align:center;
+		width:100%;
+		line-height:50px;
+		vertical-align:center;
+	}
+	#show div{
+		display:inline-block;
+		width:100px;
+		height:50px;
+		color:white;
+		background:#ff6666;
+		margin:5px;
+	}
+	#show div.selected{
+		background:gold;
+	}
+  </style>
+ </head>
+ <body>
+	<div id="box">
+		<div id="input">
+		    <input type="text" id="key"></input>
+			<button id="match">匹配</button>&nbsp;&nbsp;
+			<textarea id="txt"></textarea>
+			<button id="leftIn">左侧入</button>
+			<button id="rightIn">右侧入</button>&nbsp;&nbsp;
+			<button id="leftOut">左侧出</button>
+			<button id="righOut">右侧出</button>&nbsp;&nbsp;
+			<button id="sort">排序</button>	
+		</div>
+
+		<div id="show"></div><!--这里不能有空格，不然会当做元素节点占据位置-->
+	</div>
+	<script type="text/javascript">
+	  $("match").onclick=function(){
+		  var val=$("key").value;
+		  if(val){
+			  var reg=new RegExp(val,'g');
+			  for(var i=0,len=$("show").children.length;i<len;i++){   
+					$("show").children[i].className="";
+			  }
+			  for(var i=0,len=$("show").children.length;i<len;i++){
+				  if(reg.test($("show").children[i].innerHTML)){
+                         $("show").children[i].className="selected";
+				  }
+			  }
+			  
+		  }else{
+			  alert("请输入匹配项");
+		}
+	  };
+
+	  $("leftIn").onclick=function(){
+			   var txtArray=[];
+			   if(txtToArray($("txt").value)){
+				  txtArray=txtToArray($("txt").value);
+				   for(var i=0;i<txtArray.length;i++){
+					       if(txtArray[i]!=''){
+								var oDiv=document.createElement("div");
+								oDiv.innerHTML=txtArray[i].toString();
+								$("show").insertBefore(oDiv,$("show").firstChild);
+						   }
+					   }
+			   }else{
+				   alert("输入格式不正确请重新输入");
+			   }
+		};
+		$("rightIn").onclick=function(){
+			var txtArray=[];
+			   if(txtToArray($("txt").value)){
+				  txtArray=txtToArray($("txt").value);
+				   for(var i=0;i<txtArray.length;i++){
+					      if(txtArray[i]!=''){
+								var oDiv=document.createElement("div");
+								oDiv.innerHTML=txtArray[i].toString();
+								$("show").appendChild(oDiv);
+						  }
+						}
+			   }else{
+				   alert("输入格式不正确请重新输入");
+			   }
+				
+		};
+		$("leftOut").onclick=function(){
+			var deleteContent=$("show").removeChild($("show").firstChild);
+			alert(deleteContent.innerHTML);
+		};
+		$("righOut").onclick=function(){
+			var deleteContent=$("show").removeChild($("show").lastChild);
+			alert(deleteContent.innerHTML);
+		};
+		$("sort").onclick=sort;
+		function txtToArray(str){
+			var reg1=/^[0-9A-Za-z\u4e00-\u9fa5]+$/;
+			var reg=/,| |	|，|、|\n/g;
+			var onOff=true;
+			var txtArr=(str.replace(reg,"&")).split("&");
+			txtArr.forEach(function(obj){
+				if(!(reg1.test(obj.toString()))){
+					onOff=false;
+				}
+			});
+			if(onOff){
+				return txtArr;
+			}else{
+				return false;
+			}
+		};
+		function sort(){
+			$("sort").onOff=!$("sort").onOff;
+			var showArray=toArray($("show").children);
+			showArray.sort(function(a,b){
+				var num1=parseInt(a.innerHTML);
+				var num2=parseInt(b.innerHTML);
+				return $("sort").onOff?num1-num2:num2-num1;
+			});
+			$("show").innerHTML='';
+			showArray.forEach(function(obj){
+				$("show").appendChild(obj);
+			});
+		}
+		function $(id){
+			return document.getElementById(id);
+		}
+		function toArray(nodelist){
+			var array=null;
+			try{
+				array= Array.prototype.slice.call(nodelist,0);
+			}catch(ex){
+                array=[];
+				for(var i=0;i<nodelist.length;i++){
+					array.push(nodelist[i]);
+				}
+			}
+			return array;
+		}
+		/*var str=["志村妙",15,"土方十四郎"]
+		str.forEach(function(obj){
+			console.log(obj.toString());
+		});*/
+	</script>
+ </body>
+</html>

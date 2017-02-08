@@ -1,0 +1,12 @@
+#aqi-chart-wrap{
+	position:relative;
+	margin:50px auto;
+	height:500px;
+	width:1200px;
+	text-align:center;
+	}
+	a{
+		display:inline-block;
+		width:5px;
+		border:1px solid black;
+	}

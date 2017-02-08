@@ -1,0 +1,23 @@
+*{padding:0px;margin:0px;font-family:'Microsoft yahei';font-size:16px;}
+li{list-style:none;}
+a{text-decoration:none;}
+#video{width:800px;height:300px;border:1px solid gold;position:relative;margin:5px auto;}
+#video .header{width:700px;height:40px;vertical-align:middle;border-bottom:1px solid gold;position:relative;margin:0px auto;}
+#video .header h2{font-weight:bold;margin-left:20px;display:block;height:40px;line-height:40px;width:100px;float:left;}
+#video .header .tag{height:40px;width:50px;float:left;position:relative;}
+#video .header .tag ul{height:20px;width:50px;position:absolute;display:block;margin-top:8px;}
+#video .header .tag ul li{height:10px;width:10px;float:left;border-radius:50%;background:#bbb;margin:5px;list-style:none;}
+#video .header .tag ul li.on{background:red;}
+#video .header .btn{width:40px;height:20px;border:1px solid gold;float:left;position:relative;margin-top:5px;}
+#video .header .btn div.iconfont{position:absolute;color:rgba(0,0,0,.2);font-size:14px;width:20px;text-align:center;height:20px;line-height:20px;}
+#video .header .btn div.active{color:rgba(0,0,0,.5);}
+#video .header .btn div.prev{left:0px;top:0px;border-right:1px solid gold;}
+#video .header .btn div.next{right:0px;top:0px;}
+#video .header a{float:right;display:block;height:40px;width:150px;line-height:40px;text-align:center;}
+#video .pic{width:700px;height:150px;position:relative;margin:50px auto;overflow:hidden;}
+#video .pic .img{width:300%;}
+#video .pic ul{display:block;float:left;}
+#video .pic ul li{float:left;margin-right:50px;}
+#video .pic ul li img{width:128px;height:96px;display:block;}
+#video .pic ul li span.s1{display:block;color:red;text-align:center;margin-top:10px;}
+#video .pic ul li span.s2{display:block;color:green;text-align:center;margin-top:5px;font-size:12px;}

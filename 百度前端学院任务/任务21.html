@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="任务21">
+  <meta name="Description" content="">
+  <title>任务21</title>
+ <style type="text/css">
+	*{
+	   padding:0px;
+	   margin:0px;
+	 }
+	 input,button,select,textarea{outline:none}
+	 .wrap{
+		position:relative;
+		margin:20px auto;
+		width:1200px;
+	 }
+	 .input{
+		position:relative;
+		margin:50px auto;
+		text-align:center;
+		height:38px;
+		line-height:38px;
+	}
+	 .txt{
+	    width:200px;
+		height:36px;
+		border:1px solid #33ccff;
+		border-radius:4px;
+		box-shadow:0px 0px 15px #33ccff;
+        display:inline-block;
+		vertical-align:middle;/*这里能够通过在行内元素中加入vertical-align使得元素相对于父元素垂直居中*/
+	}
+	textarea{
+		resize:none;
+	}
+	 .sub{
+		width:50px;
+		height:24px;
+        border:1px solid #33ccff;
+		border-radius:2px;
+		margin:2px;/*button元素的margin以及padding会影响button的内容宽度*/
+		vertical-align:middle;
+	}
+	.show{
+	    position:relative;
+		margin:50px auto;
+		vertical-align:center;
+		text-align:center;
+		width:100%;
+		line-height:50px;
+		vertical-align:center;
+	}
+	.show div{
+		display:inline-block;
+		height:50px;
+		color:white;
+		background:#ff6666;
+		margin:5px;
+		padding:5px;
+	}
+	.show div:hover{
+		background:gold;
+	}
+	.show div.selected{
+		background:gold;
+	}
+  </style>
+ </head>
+ <body>
+	<div id="box" class="wrap">
+		<div class="input">
+			<textarea class="txt"></textarea>
+			<button class="sub">确认</button>
+		</div>
+		<div class="show"></div><!--这里不能有空格，不然会当做元素节点占据位置-->
+	</div>
+	<div id="box1" class="wrap">
+		<div class="input">
+			<input type="text" class="txt"></input>
+			<button class="sub">确认</button>
+		</div>
+		<div class="show"></div><!--这里不能有空格，不然会当做元素节点占据位置-->
+	</div>
+	<script type="text/javascript">
+	    contentInput($("box"));
+		contentInput($("box1"));
+        function contentInput(obj){
+			getElementByClass(obj,'sub')[0].onclick=function(){
+				var txtArray=[];
+				var showArray=getElementByClass(obj,'show')[0].children;
+				   if(txtToArray((getElementByClass(obj,'txt')[0]).value)){
+					  txtArray=txtToArray((getElementByClass(obj,'txt')[0]).value);
+					   for(var i=0;i<txtArray.length;i++){
+						   if((isRepeat1(txtArray,i,txtArray))||(isRepeat(txtArray,i,showArray))){
+								/* if(isRepeat1(txtArray,i,txtArray)){
+									txtArray.splice(i,1);
+									i--;
+								}else if(isRepeat(txtArray,i,showArray)){
+									 txtArray.splice(i,1);
+									 i--;*/
+								txtArray.splice(i,1);
+								i--;
+							 }else{
+									if(txtArray[i]!=''){
+									var oDiv=document.createElement("div");
+									oDiv.innerHTML=txtArray[i].toString();
+									oDiv.onmousedown=function(){
+										this.parentNode.removeChild(this);
+									}
+									oDiv.onmouseover=function(){
+										//val=this.innerHTML;//这里能够访问val吗？这里相当于一个闭包？
+										this.innerHTML="点击删除 "+this.innerHTML;
+									}
+									oDiv.onmouseout=function(){
+										this.innerHTML=this.innerHTML.replace('点击删除 ','');//注意这里加了多少内容后面就要减去多少，如果这里直接替换的是'点击删除'而不是'点击删除 '会导致进行一次鼠标悬停就会让空格增加一个。
+									}
+									getElementByClass(obj,'show')[0].appendChild(oDiv);
+							  }
+							 }
+							}
+							if(getElementByClass(obj,'show')[0].children.length>10){
+								for(var i=0,len=getElementByClass(obj,'show')[0].children.length-10;i<len;i++){
+									getElementByClass(obj,'show')[0].removeChild(getElementByClass(obj,'show')[0].children[i]);
+								}
+							}
+				   }else{
+					   alert("输入格式不正确请重新输入");
+				   }
+					
+			};
+		}
+		function isRepeat1(txtArray,j,arr){
+			var onOff=false;
+			for(var i=0;i<arr.length;i++){
+				if((arr[i]==txtArray[j])&&(i!=j)){
+					onOff=true;
+					break;
+				}
+			}
+			return onOff;
+		}
+		function isRepeat(txtArray,j,nodelist){
+			var onOff=false;
+			for(var i=0;i<nodelist.length;i++){
+				if(nodelist[i].innerHTML==txtArray[j]){
+					onOff=true;
+					break;
+				}
+			}
+			return onOff;
+		}
+       
+		function txtToArray(str){
+			var reg1=/^[0-9A-Za-z\u4e00-\u9fa5]+$/;
+			var reg=/,| |	|，|、|\n/g;
+			var onOff=true;
+			var txtArr=(str.replace(reg,"&")).split("&");
+			txtArr.forEach(function(obj){
+				if(!(reg1.test(obj.toString()))){
+					onOff=false;
+				}
+			});
+			if(onOff){
+				return txtArr;
+			}else{
+				return false;
+			}
+		};
+		function sort(){
+			$("sort").onOff=!$("sort").onOff;
+			var showArray=toArray($("show").children);
+			showArray.sort(function(a,b){
+				var num1=parseInt(a.innerHTML);
+				var num2=parseInt(b.innerHTML);
+				return $("sort").onOff?num1-num2:num2-num1;
+			});
+			$("show").innerHTML='';
+			showArray.forEach(function(obj){
+				$("show").appendChild(obj);
+			});
+		}
+		function $(id){
+			return document.getElementById(id);
+		}
+		function toArray(nodelist){
+			var array=null;
+			try{
+				array= Array.prototype.slice.call(nodelist,0);
+			}catch(ex){
+                array=[];
+				for(var i=0;i<nodelist.length;i++){
+					array.push(nodelist[i]);
+				}
+			}
+			return array;
+		}
+		/*var str=["志村妙",15,"土方十四郎"]
+		str.forEach(function(obj){
+			console.log(obj.toString());
+		});*/
+		function getElementByClass(obj,className){
+			var result=[];
+			if(obj.getElmentsByClassName){
+				result=obj.getElementsByTagName(className);
+			}else{
+				var oA=obj.getElementsByTagName("*");
+				for(var i=0;i<oA.length;i++){
+					var arr=oA[i].className.split(" ");
+					for(var j=0;j<arr.length;j++){
+                        if(arr[j]==className){
+                             result.push(oA[i]);
+							 break;//退出内层循环
+						}
+					}
+				}
+			}
+			return result;
+		}
+	</script>
+ </body>
+</html>

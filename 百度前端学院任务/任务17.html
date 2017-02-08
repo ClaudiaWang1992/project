@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="任务17">
+  <meta name="Description" content="实现页面上的一个完整交互功能">
+  <title>实现页面上的一个完整交互功能</title>
+  <script type="text/javascript" charset="gb2312" src="js/index17.js"></script>
+  <link type="text/css" rel="styleSheet" href="css/index17.css"/>
+ </head>
+ <body>
+  <fieldset id="form-gra-time">
+    <legend>请选择日期粒度：</legend>
+    <label>日<input name="gra-time" value="day" type="radio" checked="checked"></label>
+    <label>周<input name="gra-time" value="week" type="radio"></label>
+    <label>月<input name="gra-time" value="month" type="radio"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>请选择查看的城市：</legend>
+    <select id="city-select">
+      <option>北京</option>
+    </select>
+  </fieldset>
+  <div id="aqi-chart-wrap">
+  </div>
+ </body>
+</html>

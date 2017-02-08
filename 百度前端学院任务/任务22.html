@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="任务22">
+  <meta name="Description" content="前序中序后序遍历二叉树">
+  <title>前序中序后序遍历二叉树</title>
+  <style type="text/css">
+	div{
+		padding:10px 20px;
+		border:1px solid black;
+		margin:5px;
+		float:left;
+		background:white;
+	}
+	div.checked{
+		background:gold;
+	}
+	button {
+		height:50px;
+		width:100px;
+		border:1px solid blue;
+		border-radius:5px;
+		box-shadow:0px 0px 15px #33ccff;
+		margin-right:10px;
+	}
+	#show{
+		position:relative;
+		margin:20px auto;
+	}
+  </style>
+ </head>
+ <body>
+    <button id="preOrder">前序遍历</button>
+	<button id="inOrder">中序遍历</button>
+	<button id="postOrder">后序遍历</button><br>
+    <div id='show'>
+		<div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<div>
+			<div>
+				<div></div>
+				<div></div>
+			</div>
+			<div>
+				<div></div>
+				<div></div>				
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    var i=0;
+		var oDiv=document.getElementsByTagName("div");
+		var oPre=document.getElementById("preOrder");
+		var oIn=document.getElementById("inOrder");
+		var oPost=document.getElementById("postOrder");
+		//preOrder(oDiv[0]);
+		/*function preOrder(obj){
+			  setTimeout(function(){
+				if(obj){
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							obj.className='checked';
+							preOrder(obj.children[0]);
+							preOrder(obj.children[1]);
+
+				}
+			},1000);
+		}//递归算法，递归算法会出现问题，因为这里若在如图处设置setTimeout函数会出现当执行到嵌套函数时会再次调用setTimeout函数进行等待，这样会造成这个函数挂起，直接执行到后面的内容，这里就直接去执行第二个内嵌函数去了，在执行过程中由于有很多定时器，所以会出现问题*/
+		function preOrder1(obj){
+				if(obj){
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							obj.className='checked';
+							obj.style.border="2px solid red";
+							preOrder1(obj.children[0]);
+							preOrder1(obj.children[1]);
+
+				}
+		}
+		function inOrder1(obj){
+				if(obj){
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							inOrder1(obj.children[0]);
+							obj.className='checked';
+							obj.style.border="2px solid red";
+							inOrder1(obj.children[1]);
+
+				}
+		}
+		function postOrder1(obj){
+				if(obj){
+							postOrder1(obj.children[0]);
+							postOrder1(obj.children[1]);
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							obj.className='checked';
+							obj.style.border="2px solid red";
+
+				}
+		}
+		function preOrder(){
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				arr.push(cur);
+				var timer=setInterval(function(){
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					cur.className="checked";
+					if(cur.children[1]){
+						arr.push(cur.children[1]);
+					}
+					if(cur.children[0]){
+						arr.push(cur.children[0]);
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+					}
+				},500);
+				
+			}
+		}
+		function inOrder(){
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				cur.times=0;
+				arr.push(cur);
+				var timer=setInterval(function(){
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					if(cur.times==0){
+						if(cur.children[1]){
+							cur.children[1].times=0;
+							arr.push(cur.children[1]);
+						}
+						cur.times=1;
+						arr.push(cur);
+						if(cur.children[0]){
+							cur.children[0].times=0;
+							arr.push(cur.children[0]);
+						}
+					}else{
+						cur.className="checked";
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+					}
+				},500);
+				
+			}
+		}
+		function postOrder(){
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				cur.times=0;
+				arr.push(cur);
+				var timer=setInterval(function(){
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					if(cur.times==0){
+						cur.times=1;
+						arr.push(cur);
+						if(cur.children[1]){
+							cur.children[1].times=0;
+							arr.push(cur.children[1]);
+						}
+						if(cur.children[0]){
+							cur.children[0].times=0;
+							arr.push(cur.children[0]);
+						}
+					}else{
+						cur.className="checked";
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+					}
+				},500);
+				
+			}
+		}
+		oPre.onclick=preOrder;
+		oIn.onclick=inOrder;
+		oPost.onclick=postOrder;
+		function iterator1(obj){
+			return function(){
+				preOrder1(obj);
+			}
+		}
+		function iterator2(obj){
+			return function(){
+				inOrder1(obj);
+			}
+		}
+		function iterator3(obj){
+			return function(){
+				 postOrder1(obj);
+			}
+		}
+		document.onkeydown= iterator3(oDiv[0]);
+		/*function(e){
+			e=e||window.event;
+			if(e.keyCode=='13'){//回车
+				iterator1(oDiv[0]);
+			}else if(e.keyCode=='17'){//ctrl
+                iterator2(oDiv[0]);
+			}else if(e.keyCode=='18'){//alt
+				iterator3(oDiv[0]);
+			}
+			iterator1(oDiv[0]);
+		};*/
+
+
+		//oDiv[0].children[0].children[1].children[1].style.background="red";
+	</script>
+ </body>
+</html>

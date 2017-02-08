@@ -1,0 +1,22 @@
+#input{
+	border-radius:5px;
+	width:200px;
+	height:30px;
+	line-height:30px;
+	text-align:right;
+	}
+#btn{
+	width:80px;
+	height:40px;
+	border-radius:2px;
+	background-color:yellow;
+	color:red;
+}
+#show {
+	position:relative;
+	margin:20px auto;
+	background:rgba(0,0,0,0.5);
+	width:200px;
+	height:200px;
+	display:none;
+}

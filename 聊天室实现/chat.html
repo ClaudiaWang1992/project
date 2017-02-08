@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+ <head>
+	<meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®">
+	<meta name="Author" content="王佳蕾">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	<title>Document</title>
+	<style type="text/css">
+	*{padding:0px;margin:0px;font-family:'Microsoft yahei';}
+	#wrapper{width:1200px;height:700px;position:relative;margin:20px auto;border:1px solid #66ffff;}
+	#messageWindow{width:1100px ;height:600px;position:relative;margin:0px auto;border:1px solid #ff3300;}
+	#messageWindow span{display:none;}
+	#author,#msg{width:800px;height:20px;margin-left:20px;margin-top:10px;}
+	</style>
+ </head>
+ <body>
+	<div id="wrapper">
+		<p id="messageWindow"><span id="loading">加载中.....</span></p>
+		<form id="chatform">
+			姓名: <input type="text" id="author" size="50"/><br/>
+			内容: <input type="text" id="msg" size="50"/><br/>
+			<input type="submit" value="发送"/><br/>
+		</form>
+	</div>
+	<script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			 var timestamp=0;
+			updateMsg();
+			$("#chatform").submit(function(){
+				$.post("backend",{name:$("#author").val(),
+				                  message:$("#msg").val(),
+								  action:"postmsg",
+								  time:timestamp
+				                 },function(data,textStatus){
+									$("#msg").val("");
+									addMessages(data);
+								 });
+			    return false;
+			});
+			function updateMsg(){
+				$.post("backend",{action:"not",time:timestamp},function(data){
+					$("#loading").remove();
+					$("#messageWindow").empty();
+					addMessages(data);
+			    });
+				setTimeout(updateMsg,2000);
+			}
+			function addMessages(data){
+				if(data['status']=='2')return;
+				var json=JSON.parse(data);
+				timestamp=json['time'];
+				$.each(json['message'],function(commentIndex,comment){
+					var author=comment['users'];
+					var content=comment['msg'];
+					var html='<strong>'+author+'</strong>: '+content+'<br/>';
+					$("#messageWindow").append(html);
+				});
+			}
+		});
+	</script>
+ </body>
+</html>

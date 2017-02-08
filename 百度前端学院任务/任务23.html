@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="任务23">
+  <meta name="Description" content="前序中序后序遍历多叉树">
+  <title>前序后序遍历多叉树</title>
+  <style type="text/css">
+	div{
+		padding:5px 10px;
+		border:1px solid black;
+		margin:3px;
+		float:left;
+		background:white;
+	}
+	div.checked{
+		background:gold;
+	}
+	div.finded{
+		background:red;
+	}
+	button {
+		height:50px;
+		width:100px;
+		border:1px solid blue;
+		border-radius:5px;
+		box-shadow:0px 0px 15px #33ccff;
+		margin-right:10px;
+	}
+	input {
+		height:36px;
+		width:200px;
+		border:1px solid green;
+	}
+	#search{
+		height:30px;
+		width:60px;
+	}
+	#super{
+		position:relative;
+		margin:20px auto;
+	}
+  </style>
+ </head>
+ <body>
+    <button id="preOrder">前序遍历</button>
+	<button id="postOrder">后序遍历</button><br><br>
+	<input type="text" id="txt" placeholder="请输入关键词"></input>
+	<button id="search">搜索</button><br>
+    <div id='super'>
+	    Super
+		<div>
+		Car
+			<div>
+			Apple
+				<div>pear</div>
+				<div>pig</div>
+				<div>cala</div>
+				<div>soccer</div>
+			</div>
+			<div>
+			phone
+			</div>
+			<div>
+			third
+				<div>Book</div>
+				<div>School</div>
+			</div>
+		</div>
+		<div>
+		 Note
+			<div>
+			Hutton
+				<div>Code</div>
+				<div>Operate</div>
+				<div>Mon</div>
+			</div>
+			<div>
+			Program
+				<div>
+				Bement
+					<div>Cat</div>
+				</div>
+				<div>Glass</div>				
+			</div>
+		</div>
+		<div>
+			Fah
+		</div>
+	</div>
+	<script type="text/javascript">
+	    var i=0;
+		var oDiv=document.getElementsByTagName("div");
+		var oPre=document.getElementById("preOrder");
+		var oPost=document.getElementById("postOrder");
+		var oTxt=document.getElementById("txt");
+		var oSearch=document.getElementById("search");
+		oSearch.onclick=search;
+		function search(){
+			var key=oTxt.value;
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				arr.push(cur);
+				var timer=setInterval(function(){
+					alert(arr.length);
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					cur.className="checked";
+					if(getContent(cur).trim()==key){
+					   cur.className='finded';
+					   clearInterval(timer);
+					   return ;
+					}
+					for(var j=cur.children.length-1;j>=0;j--){
+						if(cur.children[j]){
+							arr.push(cur.children[j]);
+						}
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+						alert("未找到关键词");
+					}
+				},500);
+				
+			}
+           
+		}
+		function getContent(obj){
+			var content='';
+			for(var i=0;i<obj.childNodes.length;i++){
+				if((obj.childNodes[i].nodeType=='3')&&(obj.childNodes[i]!='')){
+					content+=obj.childNodes[i].nodeValue;
+				}
+										
+			}
+			return content;
+		}
+		function preOrder1(obj){
+				if(obj){
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							obj.className='checked';
+							obj.style.border="2px solid red";
+							preOrder1(obj.children[0]);
+							preOrder1(obj.children[1]);
+
+				}
+		}
+		function postOrder1(obj){
+				if(obj){
+							postOrder1(obj.children[0]);
+							postOrder1(obj.children[1]);
+							for(var i=0;i<oDiv.length;i++){
+								oDiv[i].className='';
+							}
+							obj.className='checked';
+							obj.style.border="2px solid red";
+
+				}
+		}
+		function preOrder(){
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				arr.push(cur);
+				var timer=setInterval(function(){
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					cur.className="checked";
+					for(var j=cur.children.length-1;j>=0;j--){
+						if(cur.children[j]){
+							arr.push(cur.children[j]);
+						}
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+					}
+				},500);
+				
+			}
+		}
+		function postOrder(){
+			var cur=oDiv[0];
+			if(cur){
+				var arr=[];
+				cur.times=0;
+				arr.push(cur);
+				var timer=setInterval(function(){
+					for(var i=0;i<oDiv.length;i++){
+						oDiv[i].className='';
+					}
+					cur=arr.pop();
+					if(cur.times==0){
+						cur.times=1;
+						arr.push(cur);
+						for(var j=cur.children.length-1;j>=0;j--){
+							if(cur.children[j]){
+								cur.children[j].times=0;
+								arr.push(cur.children[j]);
+							}
+					    }
+					}else{
+						cur.className="checked";
+					}
+					if(arr.length==0){
+                        clearInterval(timer);
+					}
+				},500);
+				
+			}
+		}
+		oPre.onclick=preOrder;
+		oPost.onclick=postOrder;
+		function iterator1(obj){
+			return function(){
+				preOrder1(obj);
+			}
+		}
+		function iterator3(obj){
+			return function(){
+				 postOrder1(obj);
+			}
+		}
+		document.onkeydown=function(e){
+			e=e||window.event;
+			if(e.keyCode=='13'){//回车
+				iterator1(oDiv[0])();
+			}else if(e.keyCode=='18'){//alt
+				iterator3(oDiv[0])();
+			}
+		};
+
+
+		
+	</script>
+ </body>
+</html>

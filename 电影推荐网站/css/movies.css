@@ -1,0 +1,147 @@
+@CHARSET "UTF-8";
+ *{
+		margin:0px;
+		padding:0px;
+	}
+	body{
+		background:url("../images/bgBody.png" );
+		font-family: Trebuchet MS, Verdana, Helvetica, Arial, san-serif; 
+	}
+	#wrap{
+		width:440px;
+		height:500px;
+		padding:140px 180px 0px 180px;
+		position:relative;
+		margin:0 auto;
+		background:url("../images/bgContent.jpg") no-repeat;
+		margin-top:-2px;
+		color:white;
+	}
+	#wrap h1{
+		position:relative;
+		font-style:bold;
+		width:450px;
+		margin-top:10px;
+	}
+	#wrap ul{
+		position:relative;
+		padding:0px;
+	}
+	#wrap ul li{
+		list-style:none;
+		font-size:12px;
+		margin:0 0 4px 0;
+	}
+	#wrap ul li.tip{
+		text-align:center;
+		font-size:10px;
+		color:red;
+	}
+	label{
+		float:left;
+		margin:4px 6px 0 0;
+		text-align:right;
+		width:160px;
+	}
+	input{
+		width:216px;
+		padding:0 2px;
+		border:2px solid #1E3755;
+	}
+	select{
+		width:224px;
+		border:2px solid #1E3755;
+	}
+	textarea{
+	    width:216px;
+		padding:0 2px;
+		border:2px solid #1E3755;
+	}
+	#register{
+		width:100px;
+	}
+	#username,#password1{
+		background:#fff url('../images/status.gif') 202px 0 no-repeat;
+		padding:0 20px 0 2px;
+		width:198px;
+	}
+	#username.thinking,#password1.thinking{
+		background-position:202px -19px;
+	}
+	#username.approved,#password1.approved{
+		background-position:202px -35px;
+	}
+	#username.denied,#password1.denied{
+		background-color:#FF8282;
+		background-position:202px -52px;
+	}
+	#cover{
+		position:relative;
+		margin-top:5px;
+		width:100%;
+		height:115px;
+		overflow:hidden;
+	}
+	#pic{
+		position:absolute;
+		width:400%;
+		height:100%;
+		left:0px;
+		top:0px;
+	}
+	#pic ul li{
+		float:left;
+		width:82px;
+		height:115px;
+		margin-right:7px;
+	}
+	#tab{
+		position:absolute;
+		bottom:1px;
+		width:100%;
+	}
+    #tab ul{
+        width:140px;
+		display:block;
+		height:10px;
+		line-height:10px;
+		position:relative;
+		margin:0px auto;
+	}
+	#tab ul li{
+		width:9px;
+		height:9px;
+		border-radius:100%;
+		background:rgba(0,0,0,.2);
+		border:3px solid rgba(0,0,0,0.5);
+		float:left;
+		margin-right:5px;
+		cursor:pointer;
+	}
+	#tab ul li.on{
+		background:rgba(0,0,0,0.9);
+		border:3px solid rgba(0,0,0,0.2);
+	}
+		#btn div{
+		width:25px;
+		height:50px;
+		background:rgba(0,0,0,.2);
+		line-height:50px;
+		text-align:center;
+		position:absolute;
+		top:50%;
+		margin-top:-25px;
+		transition:0.2s;
+		cursor:pointer;
+		font-size:30px;
+        font-weight:bold;
+	} 
+	#btn div.prev{
+		left:0px;
+	}
+	#btn div.next{
+		right:0px;
+	}
+	#btn div:hover{
+		background:rgba(0,0,0,0.5);
+	}

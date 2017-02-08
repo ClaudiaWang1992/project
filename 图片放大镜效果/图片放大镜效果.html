@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="王佳蕾">
+  <meta name="Keywords" content="图片放大镜效果">
+  <meta name="Description" content="">
+  <title>图片放大镜效果</title>
+  <style type="text/css">
+	*{
+		padding:0px;
+		margin:0px;
+	}
+	#wrap{
+		width:400px;
+		height:500px;
+		position:relative;
+		margin:50px auto;
+		border:1px solid #bbb;
+	}
+	#wrap .pic{
+		width:400px;
+		height:400px;
+		position:relative;
+	}
+	#wrap .pic .pic_cover{
+		position:absolute;
+		top:0px;
+		left:0px;
+	}
+	#wrap .pic .pic_cover img{
+		display:block;
+	}
+	#wrap .pic .pic_cover .cover{
+		width:200px;
+		height:200px;
+		position:absolute;
+		background-image:url(img/cover.png);
+		top:0;
+		left:0;
+		cursor:move;
+		display:none;
+	}
+	#wrap .pic .pic_cover .show{
+		width:400px;
+		height:400px;
+		position:absolute;
+		top:0px;
+		right:-410px;
+		background:#ffffcc;
+		display:none;
+		background-image:url(img1/1.jpg);
+	}
+	#wrap .tab{
+		width:100%;
+        height:100px;
+		position:relative;
+		margin-top:20px;
+	}
+	#wrap .tab ul{
+		position:absolute;
+		display:block;
+		margin:0px;
+		left:0px;
+		right:0px;
+		top:0px;
+		bottom:0px;
+	}
+	#wrap .tab ul li{
+		float:left;
+		margin:0 13px;
+		width:50px;
+		height:50px;
+		vertical-align:middle;
+		list-style:none;
+		position:relative;
+		border:1px solid #fff;
+		transition:border .3s;
+	}
+	#wrap .tab li.on{
+		border:2px solid #f60;
+	}
+	#wrap .tab ul li img{
+		position:absolute;
+		top:0;
+		left:0;
+		display:none;
+	}
+  </style>
+ 
+ </head>
+ <body>
+	<div id="wrap">
+		<div class="pic">
+			<div class="pic_cover">
+				<img src="img1/1.jpg" width=400 height=400/>
+				<div class="cover"></div>
+				<div class="show"></div>
+			</div>
+		</div>
+		<div class="tab">
+			<ul>
+				<li class="on"><img src="img1/1.jpg"/></li>
+				<li><img src="img1/2.jpg"/></li>
+				<li><img src="img1/3.jpg"/></li>
+				<li><img src="img1/4.jpg"/></li>
+				<li><img src="img1/5.jpg"/></li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-1.12.1.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var $tabLi=$('.tab ul li');
+		var $picImg=$('.pic img');
+		var $tabLiImg = $('.tab li img');
+		var $picCover=$('.pic_cover');
+		var $cover=$('.cover');
+		var $show=$('.pic div.show');
+		var imgArr=[];
+		var index=0;
+		init();
+		$tabLi.hover(function(){
+			index=$(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			var src=$(this).find('img').prop('src');
+			$show.css('backgroundImage','url('+src+')');
+			$picImg.prop({
+				src:src,
+				width:imgArr[index].width*400,
+				height:imgArr[index].height*400
+			});
+			$picCover.css({
+				top:(400-imgArr[index].height*400)/2+'px',
+				left:(400-imgArr[index].width*400)/2+'px'
+			});
+			var a=400*$picCover.width()/imgArr[index].imgW+'px';
+			$cover.css({
+				width:a,
+				height:a
+			});
+		});
+        $picCover.mousemove(function(e){
+			$cover.show();
+			$show.show();
+			var pX=e.pageX;
+			var pY=e.pageY;
+			var picCoverX=$picCover.offset().left;
+			var picCoverY=$picCover.offset().top;
+			var minusX=pX-picCoverX-$cover.width()/2;
+			var minusY=pY-picCoverY-$cover.height()/2;
+			minusX=Math.max(minusX,0);
+			minusX=Math.min(minusX,$picCover.width()-$cover.width());
+			minusY=Math.max(minusY,0);
+			minusY=Math.min(minusY,$picCover.height()-$cover.height());
+				$cover.css({
+				left:minusX+'px',
+				top:minusY+'px'
+			});
+			$show.css(
+			'backgroundPosition',((imgArr[index].imgW/$picCover.width())*(-minusX))+'px '+((imgArr[index].imgH/$picCover.height())*(-minusY))+'px'
+			);
+		}).mouseleave(function(){
+			$cover.hide();
+			$show.hide();
+		});
+		/*$show.mouseover(function(){
+			$cover.hide();
+			$(this).hide();
+		}).mousemove(function(){
+			return false;
+		});*/
+		function init(){
+			$tabLiImg.each(function(i){
+				var imgWidth=$(this).width();
+				var imgHeight=$(this).height();
+				if(imgWidth>=imgHeight){
+					$(this).css({
+						width:'50px',
+						height:50/imgWidth*imgHeight+'px'
+					});
+					$(this).css({
+						top:(50-50/imgWidth*imgHeight)/2+'px'
+					});
+					imgArr[i]={width:1,height:imgHeight/imgWidth,imgW:imgWidth,imgH:imgHeight};
+				}else{
+					$(this).css({
+						width:50/imgHeight*imgWidth+'px',
+						height:'50px'
+					});
+					$(this).css({
+						left:(50-50/imgHeight*imgWidth)/2+'px'
+					});
+					imgArr[i]={width:imgWidth/imgHeight,height:1,imgW:imgWidth,imgH:imgHeight};
+				}
+				$(this).show();
+				
+			});
+		}
+	});
+	</script>
+ </body>
+</html>
